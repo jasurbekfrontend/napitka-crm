@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 
 const Ombor = () => {
   const [data, setData] = useState([]);
@@ -13,6 +14,7 @@ const Ombor = () => {
   const [loading, setLoading] = useState(true);
   const [sellingAmount, setSellingAmount] = useState(1);
   const [selectedShop, setSelectedShop] = useState("");
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setLoading(false);
@@ -20,19 +22,21 @@ const Ombor = () => {
 
   async function sellItem(id, sellingAmount, selectedShopId, e) {
     e.preventDefault();
-    
+
     try {
       const product = data.find((product) => +product.id === +id);
       const shop = shopData.find((shop) => shop.id === selectedShopId);
-  
+
       // Update product amount
       await axios.put(
         `https://663b3c9ffee6744a6ea0ddeb.mockapi.io/products/${id}`,
         { amount: product.amount - sellingAmount }
       );
-  
+
       // Update shop data
-      const updatedShopData = shop.sotilganmahsulotlar ? [...shop.sotilganmahsulotlar] : [];
+      const updatedShopData = shop.sotilganmahsulotlar
+        ? [...shop.sotilganmahsulotlar]
+        : [];
       updatedShopData.push({
         id: id,
         name: product.name,
@@ -42,23 +46,20 @@ const Ombor = () => {
         amount: sellingAmount,
         date: new Date().toISOString().split("T")[0],
       });
-  
+
       await axios.put(
         `https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets/${selectedShopId}`,
         { ...shop, sotilganmahsulotlar: updatedShopData }
       );
-  
+
       console.log(`Item sold successfully to shop ${shop.name}`);
     } catch (error) {
       console.error(error);
       alert(error.message);
     }
-  
-    console.log(id);
-    console.log(sellingAmount);
-    console.log(selectedShopId);
+    window.location.reload();
+    navigate("/product");
   }
-  
 
   const openMenu = async (id) => {
     const updatedData = data.map((product) =>
