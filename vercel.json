@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "./src/pages/AddMarket.jsx",
+      "dest": "/addmarket"
+    },
+    {
+      "src": "./src/pages/AddProduct.jsx",
+      "dest": "/addproduct"
+    },
+    {
+      "src": "./src/pages/Dokonlar.jsx",
+      "dest": "/market"
+    },
+    {
+      "src": "./src/pages/Ombor.jsx",
+      "dest": "/product"
+    },
+    {
+      "src": "./src/pages/Home.jsx",
+      "dest": "/"
+    }
+  ]
+}
