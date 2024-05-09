@@ -1,0 +1,31 @@
+{
+  "products": [
+    {
+      "id": "9447",
+      "name": "Pepsi",
+      "type": "blok",
+      "volume": 1.5,
+      "price": 12000,
+      "amount": 100,
+      "date": "2024-05-07"
+    },
+    {
+      "id": "0a44",
+      "name": "Pepsi",
+      "type": "dona",
+      "volume": 1,
+      "price": 5000,
+      "amount": 50,
+      "date": "2024-05-07"
+    }
+  ],
+  "shops": [
+    {
+      "id": "a2cc",
+      "marketName": "Anvar aka",
+      "phone": "+998947052818",
+      "createdData": "2024-05-07",
+      "selledProducts": []
+    }
+  ]
+}
