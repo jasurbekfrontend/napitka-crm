@@ -52,13 +52,12 @@ const Ombor = () => {
         { ...shop, sotilganmahsulotlar: updatedShopData }
       );
 
-      console.log(`Item sold successfully to shop ${shop.name}`);
+      alert(`Mahsulot ${shop.name}ga sotildi`);
     } catch (error) {
       console.error(error);
       alert(error.message);
     }
-    window.location.reload();
-    navigate("/product");
+    navigate("/market");
   }
 
   const openMenu = async (id) => {
@@ -123,67 +122,75 @@ const Ombor = () => {
       </Backdrop>
       <BackButton />
       <b>Ombordagi mahsulotlar</b>
-      {data.map((product) => (
-        <div className="productCard" key={product.id}>
-          <p>{formatDate(product.date)}</p>
-          <div className="title">
-            <b>{product.name}</b>
-            <p>{product.volume}l</p>
-            <b>
-              {product.amount} {product.type}
-            </b>
-          </div>
-          <div className="subtitle">
-            <p>
-              {product.price.toLocaleString()} so'mdan /{" "}
-              {(product.amount * product.price).toLocaleString()} so'm
-            </p>
-          </div>
-          <div className="actions">
-            <button>
-              <MdDelete />
-            </button>
-            <button onClick={() => openMenu(product.id)}>
-              {product.openMenu ? <IoClose /> : <MdOutlineFileUpload />}
-            </button>
-          </div>
-          {product.openMenu && (
-            <div className="selling-form">
-              <form
-                onSubmit={(event) =>
-                  sellItem(product.id, sellingAmount, selectedShop, event)
-                }
-              >
-                <input
-                  type="number"
-                  placeholder="Soni"
-                  required
-                  max={product.amount}
-                  min={1}
-                  value={sellingAmount}
-                  onChange={(event) => setSellingAmount(event.target.value)}
-                />
-                <select
-                  value={selectedShop}
-                  onChange={(event) => setSelectedShop(event.target.value)}
-                >
-                  <option value="" disabled>
-                    Do'konni tanlang
-                  </option>
-                  {shopData.map((shop) => (
-                    <option key={shop.id} value={shop.id}>
-                      {shop.name}
-                    </option>
-                  ))}
-                </select>
-                <button type="submit">
-                  <MdOutlineFileUpload />
-                </button>
-              </form>
+
+      {data.length > 0 ? (
+        data.map((product) => (
+          <div className="productCard" key={product.id}>
+            <p>{formatDate(product.date)}</p>
+            <div className="title">
+              <b>{product.name}</b>
+              <p>{product.volume}l</p>
+              <b>
+                {product.amount} {product.type}
+              </b>
             </div>
-          )}
+            <div className="subtitle">
+              <p>
+                {product.price.toLocaleString()} so'mdan /{" "}
+                {(product.amount * product.price).toLocaleString()} so'm
+              </p>
+            </div>
+            <div className="actions">
+              <button>
+                <MdDelete />
+              </button>
+              <button onClick={() => openMenu(product.id)}>
+                {product.openMenu ? <IoClose /> : <MdOutlineFileUpload />}
+              </button>
+            </div>
+            {product.openMenu && (
+              <div className="selling-form">
+                <form
+                  onSubmit={(event) =>
+                    sellItem(product.id, sellingAmount, selectedShop, event)
+                  }
+                >
+                  <input
+                    type="number"
+                    placeholder="Soni"
+                    required
+                    max={product.amount}
+                    min={1}
+                    value={sellingAmount}
+                    onChange={(event) => setSellingAmount(event.target.value)}
+                  />
+                  <select
+                    value={selectedShop}
+                    required
+                    onChange={(event) => setSelectedShop(event.target.value)}
+                  >
+                    <option value="" disabled selected>
+                      Do'konni tanlang
+                    </option>
+                    {shopData.map((shop) => (
+                      <option key={shop.id} value={shop.id}>
+                        {shop.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button type="submit">
+                    <MdOutlineFileUpload />
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <div className="productCard">
+          <b>Hali mahsulot qo'shilmagan</b>
         </div>
-      ))}
+      )}
     </div>
   );
 };

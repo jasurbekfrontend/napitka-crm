@@ -3,12 +3,14 @@ import React, { useRef, useState } from "react";
 import BackButton from "../components/BackButton";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
   const nameRef = useRef();
   const typeRef = useRef();
   const volumeRef = useRef();
   const priceRef = useRef();
   const amountRef = useRef();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -40,13 +42,14 @@ const AddProduct = () => {
         volumeRef.current.value = "";
         priceRef.current.value = "";
         amountRef.current.value = "";
-        window.location.reload();
         handleClose();
+        alert("Mahsulot qo'shildi")
       })
       .catch((error) => {
         console.log(error);
         handleClose();
-        window.location.reload();
+        alert("Mahsulot qo'shilmadi")
+
       });
   };
 

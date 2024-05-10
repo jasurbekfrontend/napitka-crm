@@ -3,9 +3,11 @@ import React, { useRef, useState } from "react";
 import BackButton from "../components/BackButton";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 const AddMarket = () => {
   const marketName = useRef();
   const phone = useRef();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -27,16 +29,15 @@ const AddMarket = () => {
     axios
       .post("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets", obj)
       .then((response) => {
-        handleClose()
+        handleClose();
         marketName.current.value = "";
         phone.current.value = "";
-        window.location.reload();
         alert("Do'kon qo'shildi");
       })
       .catch((error) => {
         handleClose();
-        alert(error.message);
-        window.location.reload();
+        alert("Do'kon qo'shilmadi");
+
       });
   };
 
