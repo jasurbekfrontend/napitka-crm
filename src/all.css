@@ -92,7 +92,13 @@ button {
 .wrapper button svg {
   margin-right: 5px;
 }
-
+.wrapper > button > a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 20px;
+  color: #fff;
+}
 .wrapper button:hover {
   opacity: 0.8;
 }
@@ -159,16 +165,16 @@ button {
   flex-direction: column;
   gap: 12px;
 }
-.selling-form > form{
+.selling-form > form {
   display: flex;
   align-items: center;
   gap: 5px;
 }
-.selling-form > form > input:first-child{
+.selling-form > form > input:first-child {
   display: flex;
   text-align: center;
 }
-.selling-form > form > button{
+.selling-form > form > button {
   width: 25px;
   height: 25px;
   display: flex;
