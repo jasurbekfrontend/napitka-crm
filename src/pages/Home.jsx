@@ -4,6 +4,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FaWarehouse } from "react-icons/fa";
 import { FaShop } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineReport } from "react-icons/md";
 const Home = () => {
   const navigate = useNavigate();
   return (
@@ -23,6 +24,11 @@ const Home = () => {
       <button onClick={() => navigate("/market")}>
         <FaShop />
         Do'konlar
+      </button>
+      <button>
+        <a href="https://t.me/jasurbek_react">
+          <MdOutlineReport /> Dasturchi
+        </a>
       </button>
     </div>
   );
