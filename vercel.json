@@ -1,0 +1,24 @@
+{
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/"
+    },
+    {
+      "src": "/market",
+      "dest": "/"
+    },
+    {
+      "src": "/addmarket",
+      "dest": "/"
+    },
+    {
+      "src": "/addproduct",
+      "dest": "/"
+    },
+    {
+      "src": "/product",
+      "dest": "/"
+    }
+  ]
+}
