@@ -14,15 +14,19 @@ const Ombor = () => {
   const [loading, setLoading] = useState(true);
   const [sellingAmount, setSellingAmount] = useState(1);
   const [selectedShop, setSelectedShop] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const handleClose = () => {
     setLoading(false);
   };
+  const handleOpen = () => {
+    setLoading(true);
+  };
 
   async function sellItem(id, sellingAmount, selectedShopId, e) {
     e.preventDefault();
-
+    handleOpen();
     try {
       const product = data.find((product) => +product.id === +id);
       const shop = shopData.find((shop) => shop.id === selectedShopId);
@@ -47,15 +51,18 @@ const Ombor = () => {
         date: new Date().toISOString().split("T")[0],
       });
 
-      await axios.put(
-        `https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets/${selectedShopId}`,
-        { ...shop, sotilganmahsulotlar: updatedShopData }
-      );
-
-      alert(`Mahsulot ${shop.name}ga sotildi`);
+      await axios
+        .put(
+          `https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets/${selectedShopId}`,
+          { ...shop, sotilganmahsulotlar: updatedShopData }
+        )
+        .then((response) => {
+          handleClose();
+          alert(`Mahsulot ${shop.name}ga sotildi`);
+        });
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      handleClose();
     }
     navigate("/market");
   }
@@ -78,14 +85,14 @@ const Ombor = () => {
       alert(error.message);
     }
   };
+
   function formatDate(dateString) {
     if (!dateString) return "";
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
-
-  useEffect(() => {
+  function getData() {
     setLoading(true);
 
     axios
@@ -109,7 +116,27 @@ const Ombor = () => {
         alert(error.message);
         handleClose();
       });
+  }
+  useEffect(() => {
+    getData();
   }, []);
+
+  // Function to filter data based on search query
+  const filteredData = data.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  function deleteItem(id) {
+    axios
+      .delete(`https://663b3c9ffee6744a6ea0ddeb.mockapi.io/products/${id}`)
+      .then((response) => {
+        alert("Mahsulot o'chirildi");
+        getData();
+      })
+      .catch((error) => {
+        console.log("Mahsulot o'chirilmadi");
+      });
+  }
 
   return (
     <div className="productContainer">
@@ -122,9 +149,21 @@ const Ombor = () => {
       </Backdrop>
       <BackButton />
       <b>Ombordagi mahsulotlar</b>
+      {data.length > 1 ? (
+        <div className="search">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={() => setSearchQuery("")}>
+            <IoClose />
+          </button>
+        </div>
+      ) : null}
 
-      {data.length > 0 ? (
-        data.map((product) => (
+      {filteredData.length > 0 ? (
+        filteredData.map((product) => (
           <div className="productCard" key={product.id}>
             <p>{formatDate(product.date)}</p>
             <div className="title">
@@ -141,7 +180,7 @@ const Ombor = () => {
               </p>
             </div>
             <div className="actions">
-              <button>
+              <button onClick={() => deleteItem(product.id)}>
                 <MdDelete />
               </button>
               <button onClick={() => openMenu(product.id)}>
@@ -188,7 +227,7 @@ const Ombor = () => {
         ))
       ) : (
         <div className="productCard">
-          <b>Hali mahsulot qo'shilmagan</b>
+          <b>No products found</b>
         </div>
       )}
     </div>

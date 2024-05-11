@@ -183,3 +183,25 @@ button {
   font-size: 20px;
   background-color: transparent;
 }
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.search > button {
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search > input {
+  width: 73%;
+  height: 30px;
+  padding-left: 12px;
+}

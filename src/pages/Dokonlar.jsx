@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import BackButton from "../components/BackButton";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 const Dokonlar = () => {
   const [shops, setShops] = useState([]);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -23,7 +26,7 @@ const Dokonlar = () => {
     return date.toLocaleDateString("en-US", options);
   }
 
-  useEffect(() => {
+  function getData() {
     handleOpen();
 
     axios
@@ -37,7 +40,26 @@ const Dokonlar = () => {
         console.log(error);
         alert(error.message);
       });
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
+
+  const filteredData = shops.filter((shop) =>
+    shop.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  function deleteItem(id) {
+    axios
+      .delete(`https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets/${id}`)
+      .then((response) => {
+        alert("Do'kon o'chirildi");
+        getData();
+      })
+      .catch((error) => {
+        console.log("Do'kon o'chirilmadi");
+      });
+  }
   return (
     <div className="productContainer">
       <Backdrop
@@ -49,8 +71,20 @@ const Dokonlar = () => {
       </Backdrop>
       <BackButton />
       <b>Do'konlar</b>
-      {shops.length > 0 ? (
-        shops.map((shop) => (
+      {shops.length > 1 ? (
+        <div className="search">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={() => setSearchQuery("")}>
+            <IoClose />
+          </button>
+        </div>
+      ) : null}
+      {filteredData.length > 0 ? (
+        filteredData.map((shop) => (
           <div className="market" key={shop.id}>
             <b>
               {formatDate(shop.yaratilgansana)} <p>{shop.phone}</p>
@@ -58,7 +92,7 @@ const Dokonlar = () => {
             <h3>
               {shop.name}{" "}
               <div className="actions">
-                <button>
+                <button onClick={() => deleteItem(shop.id)}>
                   <MdDelete />
                 </button>
                 <button onClick={() => navigate("/product")}>
