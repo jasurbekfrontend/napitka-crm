@@ -15,6 +15,8 @@ const Ombor = () => {
   const [sellingAmount, setSellingAmount] = useState(1);
   const [selectedShop, setSelectedShop] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const owner = JSON.parse(localStorage.getItem("user")).username;
+
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -98,11 +100,16 @@ const Ombor = () => {
     axios
       .get("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/products")
       .then((response) => {
-        setData(response.data);
+        const newData = response.data.filter((data) => data.owner === owner);
+        setData(newData);
+
         axios
           .get("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets")
           .then((marketResponse) => {
-            setShopData(marketResponse.data);
+            const newMarketData = marketResponse.data.filter(
+              (data) => data.owner === owner
+            );
+            setShopData(newMarketData);
             handleClose();
           })
           .catch((marketError) => {
@@ -227,7 +234,7 @@ const Ombor = () => {
         ))
       ) : (
         <div className="productCard">
-          <b>No products found</b>
+          <b>Mahsulot yo'q</b>
         </div>
       )}
     </div>

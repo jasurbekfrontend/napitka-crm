@@ -26,7 +26,7 @@ const Home = () => {
         Do'konlar
       </button>
       <button>
-        <a href="https://t.me/jasurbek_react">
+        <a href="https://t.me/jasurbek2818">
           <MdOutlineReport /> Dasturchi
         </a>
       </button>

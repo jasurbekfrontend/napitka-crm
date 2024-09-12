@@ -12,7 +12,7 @@ const Dokonlar = () => {
   const [shops, setShops] = useState([]);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const owner = JSON.parse(localStorage.getItem("user")).username;
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -32,7 +32,8 @@ const Dokonlar = () => {
     axios
       .get("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets")
       .then((response) => {
-        setShops(response.data);
+        const newData = response.data.filter((data) => data.owner === owner);
+        setShops(newData);
         handleClose();
       })
       .catch((error) => {

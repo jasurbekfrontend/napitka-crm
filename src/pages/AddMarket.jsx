@@ -25,6 +25,7 @@ const AddMarket = () => {
       phone: phone.current.value,
       yaratilgansana: currentDateStr,
       sotilganmahsulotlar: [],
+      owner: JSON.parse(localStorage.getItem("user")).username,
     };
     axios
       .post("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/markets", obj)
@@ -33,11 +34,11 @@ const AddMarket = () => {
         marketName.current.value = "";
         phone.current.value = "";
         alert("Do'kon qo'shildi");
+        navigate("/market");
       })
       .catch((error) => {
         handleClose();
         alert("Do'kon qo'shilmadi");
-
       });
   };
 

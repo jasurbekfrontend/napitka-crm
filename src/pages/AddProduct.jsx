@@ -33,6 +33,7 @@ const AddProduct = () => {
       amount: parseFloat(amountRef.current.value),
       date: currentDateStr,
       openMenu: false,
+      owner: JSON.parse(localStorage.getItem("user")).username,
     };
     axios
       .post("https://663b3c9ffee6744a6ea0ddeb.mockapi.io/products", obj)
@@ -43,13 +44,13 @@ const AddProduct = () => {
         priceRef.current.value = "";
         amountRef.current.value = "";
         handleClose();
-        alert("Mahsulot qo'shildi")
+        alert("Mahsulot qo'shildi");
+        navigate("/product");
       })
       .catch((error) => {
         console.log(error);
         handleClose();
-        alert("Mahsulot qo'shilmadi")
-
+        alert("Mahsulot qo'shilmadi");
       });
   };
 
